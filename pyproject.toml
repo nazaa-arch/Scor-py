@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scor-py"
+version = "0.1.0"
+description = "Toolkit Metrik & Simulasi Rantai Pasok Berbasis Kerangka SCOR"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "SCOR-Py Contributors" }
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Office/Business :: Financial :: Spreadsheet",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+    "pandera>=0.18.0",
+]
+
+[project.optional-dependencies]
+dashboard = [
+    "streamlit>=1.30.0",
+    "plotly>=5.18.0",
+]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "hypothesis>=6.80.0",
+    "ruff>=0.1.0",
+    "mypy>=1.6.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["scorpy*", "dashboard*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-q --cov=scorpy --cov-report=term-missing"
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
