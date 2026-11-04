@@ -161,20 +161,40 @@ scor-py/
 └── requirements.txt
 ```
 
-## ⚙️ Instalasi
+## ⚙️ Instalasi & Penggunaan
 
 Prasyarat: **Python 3.10+**.
 
 ```bash
 # Dari sumber (pengembangan)
-git clone https://github.com/<username>/scor-py.git
-cd scor-py
+git clone https://github.com/nazaa-arch/Scor-py.git
+cd Scor-py
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -e ".[dev]"
+pip install -e ".[dev,dashboard]"
 
-# Menjalankan dasbor
-pip install -e ".[dashboard]"
+# Menjalankan dasbor Streamlit interaktif
 streamlit run dashboard/app.py
+
+# Atau menggunakan Docker (satu perintah)
+docker compose up
+```
+
+### 💻 Command-Line Interface (CLI)
+
+SCOR-Py menyediakan antarmuka CLI `scorpy` untuk analisis batch tanpa perlu membuka dashboard atau notebook:
+
+```bash
+# Evaluasi metrik Reliability & Responsiveness
+scorpy evaluate-orders --data data/sample_orders.csv
+
+# Evaluasi dikelompokkan berdasarkan segmen pelanggan (format JSON)
+scorpy evaluate-orders --data data/sample_orders.csv --group-by customer_segment --format json
+
+# Hitung Cash-to-Cash Cycle Time (AM.1.1)
+scorpy evaluate-c2c --cogs 15000000000 --revenue 22500000000 --inventory 2100000000 --ar 1800000000 --ap 1400000000
+
+# Jalankan simulasi Monte Carlo gangguan keterlambatan pemasok
+scorpy simulate --data data/sample_orders.csv --lead-shift 3 --runs 1000
 ```
 
 > Paket belum dipublikasikan ke PyPI. Setelah dirilis, instalasi cukup dengan `pip install scor-py` (nama paket) dan `import scorpy` (nama modul).
