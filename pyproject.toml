@@ -42,6 +42,9 @@ dev = [
     "mypy>=1.6.0",
 ]
 
+[project.scripts]
+scorpy = "scorpy.cli:main"
+
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["scorpy*", "dashboard*"]
