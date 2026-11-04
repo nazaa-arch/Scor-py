@@ -1,23 +1,26 @@
 """Verification script to test all SCOR-Py components against specifications."""
 
-import os
-import sys
 import pandas as pd
-from scorpy.reliability import ReliabilityMetrics
-from scorpy.asset_efficiency import AssetMetrics
-from scorpy.responsiveness import ResponsivenessMetrics
-from scorpy.cost import CostMetrics
-from scorpy.simulator import SupplyChainSimulator
-from scorpy.schema import validate_orders, validate_financials, validate_inventory
+
 from dashboard.components.gauge import create_gauge_chart
-from dashboard.components.waterfall import create_c2c_waterfall, create_cost_waterfall
 from dashboard.components.sankey import create_delivery_sankey
+from dashboard.components.waterfall import create_c2c_waterfall
+from scorpy.asset_efficiency import AssetMetrics
+from scorpy.cost import CostMetrics
+from scorpy.reliability import ReliabilityMetrics
+from scorpy.responsiveness import ResponsivenessMetrics
+from scorpy.schema import validate_financials, validate_inventory, validate_orders
+from scorpy.simulator import SupplyChainSimulator
+
 
 def verify_all():
     print("=" * 60)
     print("1. CHECKING DATASETS AND SCHEMAS")
     print("=" * 60)
-    df_orders = pd.read_csv("data/sample_orders.csv", parse_dates=["order_date", "promised_delivery_date", "actual_delivery_date"])
+    df_orders = pd.read_csv(
+        "data/sample_orders.csv",
+        parse_dates=["order_date", "promised_delivery_date", "actual_delivery_date"],
+    )
     df_fin = pd.read_csv("data/sample_financials.csv")
     df_inv = pd.read_csv("data/sample_inventory.csv")
 
@@ -51,8 +54,12 @@ def verify_all():
     otif = summary["OTIF_rate"]
     on_time = summary["On_Time_rate"]
     in_full = summary["In_Full_rate"]
-    assert pof <= otif <= min(on_time, in_full), f"Invariant violated: {pof} <= {otif} <= min({on_time}, {in_full})"
-    print(f"[OK] SCOR Invariant Holds: POF ({pof}) <= OTIF ({otif}) <= min(On-Time: {on_time}, In-Full: {in_full})")
+    assert pof <= otif <= min(on_time, in_full), (
+        f"Invariant violated: {pof} <= {otif} <= min({on_time}, {in_full})"
+    )
+    print(
+        f"[OK] SCOR Invariant Holds: POF ({pof}) <= OTIF ({otif}) <= min(On-Time: {on_time}, In-Full: {in_full})"
+    )
 
     by_customer = rel.evaluate_all(group_by="customer_segment")
     assert isinstance(by_customer, pd.DataFrame)
@@ -140,6 +147,7 @@ def verify_all():
     print("\n" + "=" * 60)
     print("ALL VERIFICATION CHECKS PASSED WITH ZERO ERRORS!")
     print("=" * 60)
+
 
 if __name__ == "__main__":
     verify_all()
