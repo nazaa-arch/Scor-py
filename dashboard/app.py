@@ -1,5 +1,6 @@
 """Streamlit Dashboard for SCOR-Py: Toolkit Metrik & Simulasi Rantai Pasok Berbasis SCOR."""
 
+import json
 import os
 
 import pandas as pd
@@ -8,12 +9,15 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from dashboard.components.gauge import create_gauge_chart
+from dashboard.components.pareto import create_pareto_chart
 from dashboard.components.sankey import create_delivery_sankey
 from dashboard.components.waterfall import create_c2c_waterfall, create_cost_waterfall
 from scorpy.asset_efficiency import AssetMetrics
 from scorpy.cost import CostMetrics
+from scorpy.export import generate_unified_scorecard
 from scorpy.reliability import ReliabilityMetrics
 from scorpy.responsiveness import ResponsivenessMetrics
+from scorpy.root_cause import pareto_failure_analysis
 from scorpy.simulator import SupplyChainSimulator
 
 st.set_page_config(
@@ -104,6 +108,13 @@ sel_supplier = st.sidebar.selectbox("Pemasok / Vendor", all_suppliers)
 if sel_supplier != "Semua":
     df_orders = df_orders[df_orders["supplier"] == sel_supplier]
 
+# Product Category filter
+if "product_category" in df_orders.columns:
+    all_categories = ["Semua"] + sorted(list(df_orders["product_category"].dropna().unique()))
+    sel_category = st.sidebar.selectbox("Kategori Produk", all_categories)
+    if sel_category != "Semua":
+        df_orders = df_orders[df_orders["product_category"] == sel_category]
+
 st.sidebar.markdown("---")
 st.sidebar.subheader("Toleransi SCOR")
 grace_days = st.sidebar.number_input(
@@ -114,6 +125,23 @@ in_full_tol = (
         "Toleransi Kuantitas In-Full (%)", min_value=0.0, max_value=10.0, value=0.0, step=0.5
     )
     / 100.0
+)
+
+st.sidebar.markdown("---")
+st.sidebar.subheader("Ekspor Scorecard")
+scorecard_data = generate_unified_scorecard(
+    df_orders=df_orders,
+    df_financials=df_fin_raw,
+    df_inventory=df_inv_raw,
+    grace_days=grace_days,
+    in_full_tolerance=in_full_tol,
+)
+st.sidebar.download_button(
+    label="📥 Unduh JSON Scorecard",
+    data=json.dumps(scorecard_data, indent=2, default=str),
+    file_name="scor_scorecard.json",
+    mime="application/json",
+    use_container_width=True,
 )
 
 st.title("📦 SCOR-Py: Dashboard Metrik & Simulasi Rantai Pasok")
@@ -239,6 +267,16 @@ with tab_rel:
             detailed_df = rel.detailed_orders()
             sankey_fig = create_delivery_sankey(detailed_df)
             st.plotly_chart(sankey_fig, use_container_width=True)
+
+        st.markdown("---")
+        st.subheader("Dekomposisi Akar Masalah: Analisis Pareto Defek Pesanan (80/20)")
+        pareto_df = pareto_failure_analysis(
+            df_orders=df_orders,
+            on_time_grace_days=grace_days,
+            in_full_tolerance=in_full_tol,
+        )
+        pareto_fig = create_pareto_chart(pareto_df)
+        st.plotly_chart(pareto_fig, use_container_width=True)
 
 # ----------------- TAB 2: RESPONSIVENESS -----------------
 with tab_resp:
