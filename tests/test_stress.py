@@ -1,12 +1,11 @@
 """Stress tests and boundary condition edge cases for SCOR-Py."""
 
-import pandas as pd
 import numpy as np
+import pandas as pd
+
+from scorpy.asset_efficiency import AssetMetrics
 from scorpy.reliability import ReliabilityMetrics
 from scorpy.responsiveness import ResponsivenessMetrics
-from scorpy.asset_efficiency import AssetMetrics
-from scorpy.cost import CostMetrics
-from scorpy.simulator import SupplyChainSimulator
 
 
 def test_zero_day_lead_time_orders():
@@ -64,7 +63,7 @@ def test_large_dataset_throughput():
     leads = np.random.randint(2, 8, size=n)
 
     ods = [base + pd.Timedelta(days=int(off)) for off in offsets]
-    pds = [od + pd.Timedelta(days=int(l)) for od, l in zip(ods, leads, strict=False)]
+    pds = [od + pd.Timedelta(days=int(ld)) for od, ld in zip(ods, leads, strict=False)]
     ads = [pd_d + pd.Timedelta(days=1) for pd_d in pds]
 
     df = pd.DataFrame(

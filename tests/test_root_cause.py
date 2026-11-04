@@ -1,6 +1,7 @@
 """Unit tests for scorpy.root_cause Pareto analysis."""
 
 import pandas as pd
+
 from scorpy.root_cause import pareto_failure_analysis
 
 

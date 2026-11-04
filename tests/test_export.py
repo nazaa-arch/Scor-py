@@ -1,12 +1,13 @@
 """Unit tests for scorpy.export utilities."""
 
 import json
-from pathlib import Path
+
 import pandas as pd
+
 from scorpy.export import (
-    generate_unified_scorecard,
-    export_to_json,
     export_to_excel,
+    export_to_json,
+    generate_unified_scorecard,
 )
 
 

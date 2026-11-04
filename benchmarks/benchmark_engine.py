@@ -1,8 +1,10 @@
 """Performance benchmarking suite for SCOR-Py calculation engines."""
 
 import time
-import pandas as pd
+
 import numpy as np
+import pandas as pd
+
 from scorpy.reliability import ReliabilityMetrics
 from scorpy.responsiveness import ResponsivenessMetrics
 from scorpy.simulator import SupplyChainSimulator

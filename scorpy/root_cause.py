@@ -4,9 +4,9 @@ Identifies failure modes preventing Perfect Order Fulfillment (POF) and classifi
 vital few root causes (80/20 rule).
 """
 
-from typing import Dict, Any, Optional
+from typing import Optional
+
 import pandas as pd
-import numpy as np
 
 
 def pareto_failure_analysis(

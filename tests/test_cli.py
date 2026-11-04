@@ -1,6 +1,7 @@
 """Unit tests for the scorpy CLI interface."""
 
 from click.testing import CliRunner
+
 from scorpy.cli import main
 
 
