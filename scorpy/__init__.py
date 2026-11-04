@@ -17,6 +17,7 @@ from scorpy.export import (
 )
 from scorpy.reliability import ReliabilityMetrics
 from scorpy.responsiveness import ResponsivenessMetrics
+from scorpy.root_cause import pareto_failure_analysis
 from scorpy.schema import (
     SchemaValidationError,
     validate_financials,
@@ -36,6 +37,7 @@ __all__ = [
     "generate_unified_scorecard",
     "export_to_json",
     "export_to_excel",
+    "pareto_failure_analysis",
     "validate_orders",
     "validate_financials",
     "validate_inventory",
