@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Toolkit Metrik & Simulasi Rantai Pasok Berbasis Kerangka SCOR"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = "MIT"
 authors = [
     { name = "SCOR-Py Contributors" }
 ]
@@ -18,7 +18,6 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Topic :: Office/Business :: Financial :: Spreadsheet",
     "Topic :: Scientific/Engineering :: Information Analysis",
