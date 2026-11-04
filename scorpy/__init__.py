@@ -10,6 +10,11 @@ Implements SCOR (Supply Chain Operations Reference) metrics:
 
 from scorpy.asset_efficiency import AssetMetrics
 from scorpy.cost import CostMetrics
+from scorpy.export import (
+    export_to_excel,
+    export_to_json,
+    generate_unified_scorecard,
+)
 from scorpy.reliability import ReliabilityMetrics
 from scorpy.responsiveness import ResponsivenessMetrics
 from scorpy.schema import (
@@ -28,6 +33,9 @@ __all__ = [
     "CostMetrics",
     "SupplyChainSimulator",
     "SimulationResult",
+    "generate_unified_scorecard",
+    "export_to_json",
+    "export_to_excel",
     "validate_orders",
     "validate_financials",
     "validate_inventory",
