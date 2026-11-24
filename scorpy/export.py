@@ -64,6 +64,13 @@ def export_to_excel(
     df_by_segment: Optional[pd.DataFrame] = None,
 ) -> None:
     """Export scorecard into a multi-tab Microsoft Excel workbook (.xlsx)."""
+    try:
+        import xlsxwriter  # noqa: F401
+    except ImportError as exc:
+        raise ImportError(
+            "Ekspor Excel membutuhkan 'xlsxwriter'. Pasang dengan: pip install \"scor-py[excel]\""
+        ) from exc
+
     path = Path(filepath)
     path.parent.mkdir(parents=True, exist_ok=True)
 
