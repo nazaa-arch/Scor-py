@@ -30,6 +30,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+excel = [
+    "xlsxwriter>=3.1.0",
+]
 dashboard = [
     "streamlit>=1.30.0",
     "plotly>=5.18.0",
@@ -40,6 +43,7 @@ dev = [
     "hypothesis>=6.80.0",
     "ruff>=0.1.0",
     "mypy>=1.6.0",
+    "xlsxwriter>=3.1.0",
 ]
 
 [project.scripts]
